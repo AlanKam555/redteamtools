@@ -1,0 +1,33 @@
+{
+  "engagement": "Staging web and API assessment",
+  "authorization": {
+    "statement": "Example Corp authorises Alan to test the named staging assets.",
+    "approved_by": "Jordan Example, Head of Security",
+    "date": "2026-10-15"
+  },
+  "in_scope": [
+    "https://app.example.com, staging, build 2026.10.1"
+  ],
+  "out_of_scope": [
+    "https://payments.example.com",
+    "production and any third-party service"
+  ],
+  "allowed_methods": [
+    "Manual web and API testing at no more than five requests per second"
+  ],
+  "prohibited": [
+    "Denial of service, data destruction, and persistence"
+  ],
+  "window": {
+    "start": "2026-11-01",
+    "end": "2026-11-08"
+  },
+  "emergency_contacts": [
+    {
+      "name": "Alex Example",
+      "method": "security-oncall@example.com, +1-555-0100"
+    }
+  ],
+  "data_handling": "Evidence stays in the Example Corp engagement vault and is deleted 90 days after the retest.",
+  "acknowledgement": "Both parties acknowledge this authorisation is limited to the named assets and window."
+}
