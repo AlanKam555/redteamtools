@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets and local environment
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa
+id_ed25519
+
+# Engagement working files (keep client data out of git)
+evidence/
+captures/
+*.burp
+*.har
+output/
+generated-reports/
+
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~

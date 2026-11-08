@@ -1,0 +1,5 @@
+# Runtime dependencies: none.
+# The utilities in this directory use the Python 3.10+ standard library only.
+# Install nothing to run them:
+#
+#     python3 tools/security_header_checker.py --help
