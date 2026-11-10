@@ -42,6 +42,7 @@ The utilities refuse to contact a target until you pass `--authorized`, which re
 | [templates/](templates/README.md) | Rules of engagement, finding, report, and executive-summary templates. |
 | [tools/](tools/README.md) | Defensive utilities: header review, TLS review, a report skeleton, and a rules-of-engagement checker. |
 | [resources/](resources/README.md) | Curated links to standards, tools, and training. |
+| [Payload and wordlist libraries](resources/payload-libraries.md) | Upstream catalogues and wordlists. Linked here, not copied into the tree. |
 
 Each vulnerability note covers four things:
 
@@ -50,7 +51,7 @@ Each vulnerability note covers four things:
 3. How to confirm impact with the smallest safe proof.
 4. How to fix it and how to detect it afterwards.
 
-Raw test-string catalogues are not copied into this repository. Where an authorised tester needs those strings, the notes point at the public projects that already maintain them: the OWASP testing guide, PortSwigger Web Security Academy, [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings), and [HackTricks](https://hacktricks.wiki/). Those projects are citations for laboratory and authorised use. They are not a suggestion to run their contents against a system you do not have permission to test.
+Raw test-string catalogues are not copied into this repository. The directory of upstream payload and wordlist libraries is [resources/payload-libraries.md](resources/payload-libraries.md): PayloadsAllTheThings, SecLists, FuzzDB, the OWASP testing guide and cheat sheets, PortSwigger Web Security Academy, HackTricks, and the discovery wordlists an authorised test might actually need. Those projects are citations for laboratory and authorised use. They are not a suggestion to run their contents against a system you do not have permission to test.
 
 ## Methodology
 
@@ -155,6 +156,8 @@ Leave exploit code, malware, and ready-to-run payload collections out. If a sent
 
 ## Primary sources
 
+Payload catalogues and wordlists stay upstream. The curated list, with a one-line use for each project, is [resources/payload-libraries.md](resources/payload-libraries.md).
+
 - OWASP Web Security Testing Guide — <https://wstg.owasp.org/>
 - OWASP Cheat Sheet Series — <https://cheatsheetseries.owasp.org/>
 - OWASP Application Security Verification Standard — <https://owasp.org/www-project-application-security-verification-standard/>
@@ -166,7 +169,7 @@ Leave exploit code, malware, and ready-to-run payload collections out. If a sent
 - NIST SP 800-115 — <https://csrc.nist.gov/pubs/sp/800/115/final>
 - FIRST CVSS — <https://www.first.org/cvss/>
 
-The longer catalogue, including learning material, is [resources/standards.md](resources/standards.md), [resources/tools.md](resources/tools.md), and [resources/learning.md](resources/learning.md).
+The longer catalogue, including learning material, is [resources/standards.md](resources/standards.md), [resources/tools.md](resources/tools.md), [resources/learning.md](resources/learning.md), and [resources/payload-libraries.md](resources/payload-libraries.md).
 
 ## Licence
 

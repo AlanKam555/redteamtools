@@ -71,5 +71,6 @@ The matching engineering work is the [OWASP Application Security Verification St
 - [Vulnerability classes](vulnerabilities/README.md)
 - [Burp Suite cheatsheet](../cheatsheets/burp-suite.md)
 - [Headers and TLS](../cheatsheets/http-headers-and-tls.md)
+- [Payload and wordlist libraries](../resources/payload-libraries.md)
 - [Finding template](../templates/finding.md)
 - [Disclaimer](../DISCLAIMER.md)

@@ -43,6 +43,7 @@ A 401 or a 403 is a lead, not an invitation to guess passwords. Record the path 
 - ffuf — <https://github.com/ffuf/ffuf>
 - ffuf wiki — <https://github.com/ffuf/ffuf/wiki>
 - SecLists — <https://github.com/danielmiessler/SecLists>
+- Other wordlists, and the rule that this repository does not copy them — [payload and wordlist libraries](../resources/payload-libraries.md)
 
 ## Related in this repository
 
@@ -50,4 +51,5 @@ A 401 or a 403 is a lead, not an invitation to guess passwords. Record the path 
 - [Enumeration](../methodology/03-enumeration.md)
 - [Nmap](nmap.md)
 - [Web application testing](../methodology/05-web-application-testing.md)
+- [Payload and wordlist libraries](../resources/payload-libraries.md)
 - [Disclaimer](../DISCLAIMER.md)

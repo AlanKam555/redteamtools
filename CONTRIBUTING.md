@@ -15,7 +15,7 @@ Thank you for improving this reference. The maintainer is Alan. The repository i
 ## What does not belong here
 
 - Exploit code, malware, credential attacks, or a generator for them.
-- A copied catalogue of raw payloads. Link [OWASP](https://wstg.owasp.org/), [PortSwigger](https://portswigger.net/web-security), [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings), or [HackTricks](https://hacktricks.wiki/) instead.
+- A copied catalogue of raw payloads. Add the upstream project to [resources/payload-libraries.md](resources/payload-libraries.md) instead. That page already links the OWASP testing guide and cheat sheets, PortSwigger, PayloadsAllTheThings, SecLists, FuzzDB, and HackTricks.
 - Client data, packet captures, session cookies, or a filled-in report from a real engagement.
 - A default target, a hidden host list, or a flag that skips `--authorized`.
 

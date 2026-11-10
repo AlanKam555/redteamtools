@@ -53,9 +53,4 @@ Use [CVSS](https://www.first.org/cvss/), name the version, and then adjust for t
 
 ## Where the raw strings live
 
-This repository does not carry a payload catalogue. Use these when an authorised test or a lab exercise needs the concrete inputs, and follow each project's own licence and terms:
-
-- OWASP Web Security Testing Guide, versioned pages under <https://wstg.owasp.org/>
-- PortSwigger Web Security Academy — <https://portswigger.net/web-security>
-- PayloadsAllTheThings — <https://github.com/swisskyrepo/PayloadsAllTheThings>
-- HackTricks — <https://hacktricks.wiki/>
+This repository does not carry a payload catalogue. When an authorised test or a lab exercise needs the concrete inputs, use [payload and wordlist libraries](../resources/payload-libraries.md) and follow each project's own licence and terms. That page is the list. The files themselves stay upstream.
