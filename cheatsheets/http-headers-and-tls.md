@@ -53,3 +53,11 @@ Do not send session cookies with `curl` while you are "just checking headers". Y
 - OWASP HTTP Headers Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html>
 - OWASP Transport Layer Security Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html>
 - OWASP Content Security Policy Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html>
+
+## Related in this repository
+
+- [Cheatsheet index](README.md)
+- [Defensive utilities](../tools/README.md)
+- [Web checklist](../checklists/web-application-testing.md)
+- [Web application testing](../methodology/05-web-application-testing.md)
+- [Disclaimer](../DISCLAIMER.md)

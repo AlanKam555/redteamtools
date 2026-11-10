@@ -118,8 +118,8 @@ class FetchCliTests(unittest.TestCase):
         self.assertEqual(exit_code(main, ["--url", self.base + "/landed"]), 2)
 
     def test_fetches_local_url_and_emits_json(self) -> None:
-        from io import StringIO
         from contextlib import redirect_stdout
+        from io import StringIO
 
         buffer = StringIO()
         with redirect_stdout(buffer):

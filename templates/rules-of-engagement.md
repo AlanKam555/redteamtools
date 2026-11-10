@@ -55,3 +55,11 @@ Evidence is stored in [Engagement store]. Access is limited to [Named roles]. Ev
 ## Acknowledgement
 
 Both parties acknowledge that this authorisation is limited to the assets, methods, and window above. Permission for one host is not permission for another. Discovering a new system creates a question for the approver, not a new target.
+
+## Related in this repository
+
+- [Scoping method](../methodology/01-scoping-and-rules-of-engagement.md)
+- [Rules checklist](../checklists/rules-of-engagement.md)
+- [Validator](../tools/README.md)
+- [Completed example](examples/README.md)
+- [Disclaimer](../DISCLAIMER.md)

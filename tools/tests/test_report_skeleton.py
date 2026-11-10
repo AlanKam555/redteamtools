@@ -7,8 +7,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import support  # noqa: F401
-from support import exit_code
 from lib.report_skeleton import main, resolve_output, slugify
+from support import exit_code
 
 
 class ReportTests(unittest.TestCase):

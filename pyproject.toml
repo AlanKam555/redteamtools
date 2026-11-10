@@ -1,0 +1,34 @@
+[project]
+name = "redteamtools"
+version = "1.1.0"
+description = "Authorised penetration-testing methodology reference and defensive utilities."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+license-files = ["LICENSE"]
+authors = [{ name = "Alan" }]
+# The assessment utilities are standard-library only. Do not add runtime
+# dependencies here. Ruff is a development linter, not something the tools import.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ruff>=0.8"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+src = ["tools"]
+
+[tool.ruff.lint]
+# E501 is left to review: several modules embed prose (report text, finding
+# sentences) that would be worse if wrapped to satisfy a character count.
+# UP017 rewrites timezone.utc to datetime.UTC, which is Python 3.11+.
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501", "UP017"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["lib", "support"]
+
+[tool.ruff.lint.per-file-ignores]
+# unittest discovery inserts the tools directory; the support module is imported for that side effect.
+"tools/tests/*.py" = ["F401"]

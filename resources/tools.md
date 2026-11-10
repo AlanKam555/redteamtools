@@ -24,3 +24,10 @@ Public tools that support the method in this repository. The usage boundaries ar
 ## What this list leaves out
 
 Exploit frameworks, payload generators, and credential-attack tools are widely published and widely misused. They are not linked here. An engagement that has written permission for a specific technique can use the vendor's own documentation for that technique, under those rules, without this repository mirroring it.
+
+## Related in this repository
+
+- [Resource index](README.md)
+- [Cheatsheets](../cheatsheets/README.md)
+- [Defensive utilities](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

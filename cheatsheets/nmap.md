@@ -44,3 +44,11 @@ UDP, full 65k port sweeps, and parallel scans of many hosts need an explicit lin
 
 - Nmap — <https://nmap.org/>
 - Reference guide — <https://nmap.org/book/man.html>
+
+## Related in this repository
+
+- [Cheatsheet index](README.md)
+- [Enumeration](../methodology/03-enumeration.md)
+- [ffuf](ffuf.md)
+- [Scoping](../methodology/01-scoping-and-rules-of-engagement.md)
+- [Disclaimer](../DISCLAIMER.md)

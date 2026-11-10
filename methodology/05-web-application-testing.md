@@ -62,3 +62,14 @@ The matching engineering work is the [OWASP Application Security Verification St
 - PortSwigger Web Security Academy — <https://portswigger.net/web-security>
 - OWASP ZAP — <https://www.zaproxy.org/>
 - Web testing checklist — [../checklists/web-application-testing.md](../checklists/web-application-testing.md)
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [Web checklist](../checklists/web-application-testing.md)
+- [API testing](06-api-testing.md)
+- [Vulnerability classes](vulnerabilities/README.md)
+- [Burp Suite cheatsheet](../cheatsheets/burp-suite.md)
+- [Headers and TLS](../cheatsheets/http-headers-and-tls.md)
+- [Finding template](../templates/finding.md)
+- [Disclaimer](../DISCLAIMER.md)

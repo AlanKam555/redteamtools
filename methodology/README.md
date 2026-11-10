@@ -1,5 +1,7 @@
 # Methodology
 
+> Authorised use only. [Disclaimer](../DISCLAIMER.md) · [Security policy](../SECURITY.md) · [Repository index](../README.md) · [Licence](../LICENSE) · [Contributing](../CONTRIBUTING.md)
+
 These notes are the working method for an authorised assessment. They follow the shape used by [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final) (plan, identify, assess, analyse, report) and the test catalogue in the [OWASP Web Security Testing Guide](https://wstg.owasp.org/). MITRE ATT&CK is the language for describing adversary behaviour to a defender. It is used here as a reporting and detection vocabulary, not as a list of procedures to copy.
 
 Read [the disclaimer](../DISCLAIMER.md) first. Every activity below assumes a current written authorisation and a rules of engagement.
@@ -41,6 +43,13 @@ Each note in [vulnerabilities/](vulnerabilities/README.md) uses the same heading
 ## Severity, briefly
 
 Use [CVSS](https://www.first.org/cvss/), name the version, and then adjust for the client's impact. The FIRST qualitative bands (Informational through Critical) are a shared language. They are not a substitute for the sentence that says which business process is exposed. The reporting note expands on this.
+
+## How the rest of the repository fits
+
+- Checklists for the decisions: [scoping](../checklists/scoping.md), [rules of engagement](../checklists/rules-of-engagement.md), [web](../checklists/web-application-testing.md), [API](../checklists/api-testing.md), [reporting](../checklists/reporting.md).
+- Templates: [rules of engagement](../templates/rules-of-engagement.md), [finding](../templates/finding.md), [report](../templates/report.md), [executive summary](../templates/executive-summary.md).
+- Cheatsheets: [index](../cheatsheets/README.md). Defensive header and TLS checks: [tools](../tools/README.md).
+- Class catalogue with the upstream links: [resources/vulnerability-classes.md](../resources/vulnerability-classes.md).
 
 ## Where the raw strings live
 

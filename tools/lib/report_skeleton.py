@@ -9,7 +9,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from lib.banner import emit_banner, fail
+from lib.banner import EXIT_OK, EXIT_USAGE, emit_banner, fail
 
 _SLUG = re.compile(r"[^a-z0-9]+")
 _CONTROL = re.compile(r"[\x00-\x1f\x7f]")
@@ -41,6 +41,15 @@ def slugify(text: str) -> str:
 
 
 def resolve_output(path: Path, *, force: bool) -> Path:
+    """Return a file path inside the current directory, or raise ``ValueError``.
+
+    Absolute paths and ``..`` segments are allowed only when they still resolve
+    inside the working directory. Symlinks are resolved before that check, so a
+    link that points outside the directory is refused.
+    """
+    raw = str(path)
+    if _CONTROL.search(raw):
+        raise ValueError("output path contains control characters")
     cwd = Path.cwd().resolve()
     candidate = path if path.is_absolute() else cwd / path
     resolved = candidate.resolve()
@@ -139,8 +148,15 @@ State where evidence is stored, who may read it, and when it will be deleted. Sc
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="report_skeleton",
-        description="Write a Markdown security-report skeleton in the current directory. Makes no network connections.",
-        epilog="Authorised use only. The generated file is a draft for an engagement you are allowed to report on.",
+        description=(
+            "Write a Markdown security-report skeleton in the current directory. "
+            "Makes no network connections."
+        ),
+        epilog=(
+            "Authorised use only. The generated file is a draft for an engagement you "
+            "are allowed to report on. Exit status: 0 when the draft was written, "
+            "2 when the arguments were refused or the file could not be written."
+        ),
     )
     parser.add_argument("--client", required=False, help="Client or organisation name")
     parser.add_argument("--engagement", required=False, help="Engagement title")
@@ -152,12 +168,16 @@ def build_parser() -> argparse.ArgumentParser:
         default="Confidential",
         help="Document classification label (default Confidential)",
     )
-    parser.add_argument("--output", help="Output path inside the current directory")
+    parser.add_argument(
+        "--output",
+        help="Output path inside the current directory (default: report-<slug>-<start>.md)",
+    )
     parser.add_argument("--force", action="store_true", help="Overwrite an existing file")
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Write one local report draft. Never opens a network connection."""
     parser = build_parser()
     args = parser.parse_args(argv)
     missing = [
@@ -168,7 +188,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if missing:
         parser.print_help(sys.stderr)
         print("error: missing " + ", ".join(f"--{name}" for name in missing), file=sys.stderr)
-        return 2
+        return EXIT_USAGE
     emit_banner()
     try:
         client = clean_field(args.client, label="client", limit=200)
@@ -192,7 +212,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (ValueError, OSError) as exc:
         fail(str(exc))
     print(f"Wrote {destination}")
-    return 0
+    return EXIT_OK
 
 
 if __name__ == "__main__":

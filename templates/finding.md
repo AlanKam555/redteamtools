@@ -39,3 +39,11 @@ Point at the OWASP cheat sheet or the WSTG test that describes the fix. Prefer t
 - [CWE URL]
 - [OWASP cheat sheet or WSTG test URL]
 - [Vendor advisory, if one applies]
+
+## Related in this repository
+
+- [Report template](report.md)
+- [Reporting method](../methodology/08-reporting.md)
+- [Reporting checklist](../checklists/reporting.md)
+- [Vulnerability class notes](../methodology/vulnerabilities/README.md)
+- [Disclaimer](../DISCLAIMER.md)

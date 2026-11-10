@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import datetime as dt
 import hashlib
 import ipaddress
@@ -18,12 +19,11 @@ import re
 import socket
 import ssl
 import sys
-import urllib.parse
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from dataclasses import asdict, dataclass
 
-from lib.banner import fail, require_authorized
+from lib.banner import EXIT_FINDINGS, EXIT_OK, EXIT_USAGE, fail, require_authorized, validate_timeout
 
 _HOSTNAME = re.compile(r"\A(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\Z")
 WEAK_CIPHER_TOKENS = ("RC4", "NULL", "EXPORT", "DES-CBC", "3DES", "MD5", "ANON", "RC2", "IDEA")
@@ -37,9 +37,22 @@ class Check:
 
 
 def validate_host(raw: str) -> str:
+    """Return a DNS name or IP address, or raise ``ValueError``.
+
+    A bracketed IPv6 address such as ``[::1]`` is accepted and returned
+    without the brackets. Schemes, paths, ports, and whitespace are rejected.
+    There is no default host.
+    """
     if not isinstance(raw, str):
         raise ValueError("host must be a string")
     host = raw.strip().rstrip(".")
+    if host.startswith("[") and host.endswith("]"):
+        inner = host[1:-1]
+        try:
+            ipaddress.ip_address(inner)
+        except ValueError as exc:
+            raise ValueError("host is not a valid DNS name or IP address") from exc
+        return inner
     if not host or len(host) > 253:
         raise ValueError("host is empty or longer than 253 characters")
     if any(ord(char) < 33 for char in host):
@@ -59,6 +72,7 @@ def validate_host(raw: str) -> str:
 
 
 def validate_port(raw: int) -> int:
+    """Return ``raw`` when it is a TCP port from 1 to 65535."""
     if isinstance(raw, bool) or not isinstance(raw, int):
         raise ValueError("port must be an integer")
     if not 1 <= raw <= 65535:
@@ -75,6 +89,7 @@ def _is_ip(host: str) -> bool:
 
 
 def cipher_assessment(cipher_name: str | None) -> Check:
+    """Classify one negotiated cipher name. This does not probe the server."""
     if not cipher_name:
         return Check("cipher", "warn", "No cipher was negotiated.")
     upper = cipher_name.upper()
@@ -98,6 +113,7 @@ def cipher_assessment(cipher_name: str | None) -> Check:
 
 
 def protocol_assessment(version: str | None) -> Check:
+    """Classify one negotiated protocol name. TLS 1.2 and 1.3 pass."""
     if version in {"TLSv1.3"}:
         return Check("protocol", "pass", "Negotiated TLS 1.3.")
     if version in {"TLSv1.2"}:
@@ -109,7 +125,10 @@ def protocol_assessment(version: str | None) -> Check:
     return Check("protocol", "warn", f"Negotiated unrecognised protocol {version}.")
 
 
-def certificate_window(not_before: dt.datetime, not_after: dt.datetime, now: dt.datetime) -> list[Check]:
+def certificate_window(
+    not_before: dt.datetime, not_after: dt.datetime, now: dt.datetime
+) -> list[Check]:
+    """Classify a certificate validity window relative to ``now``."""
     checks = []
     if not_before > now:
         checks.append(Check("certificate-validity", "fail", "Certificate is not valid yet."))
@@ -160,7 +179,7 @@ def _read_length(data: bytes, index: int) -> tuple[int, int]:
     return length, index + count
 
 
-def _iter_tlv(data: bytes, start: int, end: int):
+def _iter_tlv(data: bytes, start: int, end: int) -> Iterator[tuple[int, int, int]]:
     index = start
     while index < end:
         tag = data[index]
@@ -280,10 +299,10 @@ def _handshake(
             if maximum is not None:
                 context.maximum_version = maximum
     if not verify:
-        try:
+        # Older protocol probes need a cipher list the default security level may hide.
+        # A stack that rejects the list is reported by the handshake, not by this call.
+        with contextlib.suppress(ssl.SSLError):
             context.set_ciphers("ALL:@SECLEVEL=0")
-        except ssl.SSLError:
-            pass
     sock = socket.create_connection((host, port), timeout=timeout)
     try:
         tls = context.wrap_socket(sock, server_hostname=_server_hostname(host))
@@ -432,7 +451,7 @@ def assess(host: str, port: int, timeout: float, *, now: dt.datetime | None = No
     return checks
 
 
-def _dn(pairs) -> str:
+def _dn(pairs: Sequence[Sequence[tuple[str, str]]] | None) -> str:
     if not pairs:
         return ""
     parts = []
@@ -457,36 +476,61 @@ def build_parser() -> argparse.ArgumentParser:
             "Opens a small number of handshakes and does not crawl or authenticate."
         ),
         epilog=(
-            "Authorised use only.\n"
+            "Authorised use only. Pass --authorized only when you have permission "
+            "to connect to the named host. There is no default host.\n"
+            "Exit status: 0 when no fail-level result was found, 1 when a fail-level "
+            "gap was found, 2 when the arguments were refused or the check could not run.\n"
             "Guidance: https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("--host", help="DNS name or IP you are authorised to connect to")
-    parser.add_argument("--port", type=int, default=443, help="TCP port (default 443)")
-    parser.add_argument("--authorized", action="store_true", help="Attest that you are authorised to connect")
-    parser.add_argument("--timeout", type=float, default=10, help="Per-connection timeout in seconds (1-30)")
-    parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument(
+        "--host",
+        help="DNS name or IP you are authorised to connect to (no scheme, no port)",
+    )
+    parser.add_argument("--port", type=int, default=443, help="TCP port (1-65535, default 443)")
+    parser.add_argument(
+        "--authorized",
+        action="store_true",
+        help="Attest that you are authorised to connect to this host",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=10,
+        help="Per-connection timeout in seconds (1-30, default 10)",
+    )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format (default text)",
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Review one host. Exits 2 before any connection when the flag or host is refused."""
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.host is None:
         parser.print_help(sys.stderr)
-        return 2
+        print("error: missing --host", file=sys.stderr)
+        return EXIT_USAGE
+    # Authorisation is checked before host use so a refused run never connects.
     require_authorized(args.authorized)
-    if not 1 <= args.timeout <= 30:
-        fail("--timeout must be between 1 and 30 seconds")
     try:
+        timeout = validate_timeout(args.timeout)
         host = validate_host(args.host)
         port = validate_port(args.port)
     except ValueError as exc:
         fail(str(exc))
     print(f"Target: {host}:{port}", file=sys.stderr)
     print("Authorisation flag: accepted. Opening a few read-only TLS handshakes.", file=sys.stderr)
-    checks = assess(host, port, args.timeout)
+    try:
+        checks = assess(host, port, timeout)
+    except (OSError, ssl.SSLError, ValueError) as exc:
+        fail(f"review failed: {exc}")
     if args.format == "json":
         json.dump(
             {"host": host, "port": port, "checks": [asdict(check) for check in checks]},
@@ -496,7 +540,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         sys.stdout.write("\n")
     else:
         sys.stdout.write(format_text(host, port, checks))
-    return 1 if any(check.status == "fail" for check in checks) else 0
+    return EXIT_FINDINGS if any(check.status == "fail" for check in checks) else EXIT_OK
 
 
 if __name__ == "__main__":

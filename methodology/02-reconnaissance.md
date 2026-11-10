@@ -64,3 +64,12 @@ The same sources are how an unsolicited party builds a picture. Defenders can:
 - Certificate Transparency — <https://certificate.transparency.dev/>
 - MITRE ATT&CK reconnaissance tactic, as a vocabulary for the report — <https://attack.mitre.org/matrices/enterprise/>
 - Enumeration, which consumes this phase's asset table — [03-enumeration.md](03-enumeration.md)
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [Previous: scoping](01-scoping-and-rules-of-engagement.md)
+- [Next: enumeration](03-enumeration.md)
+- [Scoping checklist](../checklists/scoping.md)
+- [Nmap cheatsheet](../cheatsheets/nmap.md)
+- [Disclaimer](../DISCLAIMER.md)

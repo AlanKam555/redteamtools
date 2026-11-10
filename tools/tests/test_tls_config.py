@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
 import socket
 import ssl
@@ -12,7 +13,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import support  # noqa: F401
-from support import exit_code
 from lib.tls_config import (
     assess,
     certificate_window,
@@ -25,6 +25,7 @@ from lib.tls_config import (
     validate_host,
     validate_port,
 )
+from support import exit_code
 
 
 class HostValidationTests(unittest.TestCase):
@@ -135,10 +136,8 @@ class LocalServerTests(unittest.TestCase):
                     try:
                         peer = context.wrap_socket(connection, server_side=True)
                         peer.settimeout(2)
-                        try:
+                        with contextlib.suppress(TimeoutError):
                             peer.recv(32)
-                        except TimeoutError:
-                            pass
                         peer.close()
                     except ssl.SSLError:
                         connection.close()

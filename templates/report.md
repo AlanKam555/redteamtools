@@ -64,3 +64,11 @@ Where evidence is stored, who may read it, and when it will be deleted. This sec
 - OWASP Application Security Verification Standard — <https://owasp.org/www-project-application-security-verification-standard/>
 - NIST SP 800-115 — <https://csrc.nist.gov/pubs/sp/800/115/final>
 - FIRST CVSS — <https://www.first.org/cvss/>
+
+## Related in this repository
+
+- [Finding template](finding.md)
+- [Executive summary](executive-summary.md)
+- [Reporting method](../methodology/08-reporting.md)
+- [Report skeleton](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

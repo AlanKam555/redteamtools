@@ -74,3 +74,13 @@ Agree who receives the document, which copy is canonical, and when the retest wi
 - Report template — [../templates/report.md](../templates/report.md)
 - Executive summary template — [../templates/executive-summary.md](../templates/executive-summary.md)
 - Finding template — [../templates/finding.md](../templates/finding.md)
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [Reporting checklist](../checklists/reporting.md)
+- [Report template](../templates/report.md)
+- [Finding template](../templates/finding.md)
+- [Executive summary](../templates/executive-summary.md)
+- [Report skeleton](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

@@ -41,3 +41,11 @@ Use this while the engagement is being agreed, together with [scoping and rules 
 
 - [ ] Anything still marked "to be decided" has an owner and is not going to be filled in by the tester on the first morning.
 - [ ] The [rules-of-engagement template](../templates/rules-of-engagement.md) can be completed from this list without inventing a decision.
+
+## Related in this repository
+
+- [Checklist index](README.md)
+- [Scoping and rules of engagement](../methodology/01-scoping-and-rules-of-engagement.md)
+- [Rules checklist](rules-of-engagement.md)
+- [Rules template](../templates/rules-of-engagement.md)
+- [Disclaimer](../DISCLAIMER.md)

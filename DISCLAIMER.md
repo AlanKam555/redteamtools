@@ -34,3 +34,11 @@ The software and the documents are provided under the MIT licence, without warra
 ## Trademarks
 
 OWASP, MITRE, ATT&CK, NIST, and the names of tools cited here belong to their respective owners. Citation does not imply endorsement by those projects.
+
+## Related in this repository
+
+- [Repository index](README.md)
+- [Security policy](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
+- [MIT licence](LICENSE) — Copyright (c) 2026 Alan
+- [Defensive utilities](tools/README.md)

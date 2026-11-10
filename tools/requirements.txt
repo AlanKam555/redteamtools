@@ -1,5 +1,9 @@
 # Runtime dependencies: none.
 # The utilities in this directory use the Python 3.10+ standard library only.
-# Install nothing to run them:
+# That constraint is also recorded in the repository pyproject.toml
+# (`dependencies = []`, requires-python >= 3.10). Install nothing to run them:
 #
 #     python3 tools/security_header_checker.py --help
+#
+# The optional `dev` extra in pyproject.toml is the linter used by CI (ruff).
+# The tools do not import it.

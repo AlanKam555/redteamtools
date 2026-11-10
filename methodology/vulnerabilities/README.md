@@ -1,5 +1,7 @@
 # Vulnerability classes
 
+> Authorised use only. [Disclaimer](../../DISCLAIMER.md) · [Security policy](../../SECURITY.md) · [Repository index](../../README.md) · [Licence](../../LICENSE) · [Contributing](../../CONTRIBUTING.md)
+
 These notes describe weakness classes that show up in ordinary web and API assessments. Each one is written so that an authorised tester can recognise the class and prove it safely, and so that an engineer can remove the class rather than patch a single parameter.
 
 They are aligned with [CWE](https://cwe.mitre.org/), the [OWASP Top 10 (2021)](https://owasp.org/Top10/2021/), the [OWASP Web Security Testing Guide](https://wstg.owasp.org/), and the [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/). Prompt injection follows the [OWASP GenAI project](https://genai.owasp.org/).
@@ -37,3 +39,12 @@ This directory does not contain exploit strings. The public catalogues linked fr
 - Log the actor, the object, the action, and the decision, and alert on the pattern this class produces.
 
 The [OWASP Application Security Verification Standard](https://owasp.org/www-project-application-security-verification-standard/) is the requirement set these habits map back to.
+
+## Related in this repository
+
+- [Methodology index](../README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Reporting](../08-reporting.md)

@@ -32,3 +32,12 @@ Use this before a report leaves the engagement store, alongside [reporting](../m
 - [ ] The client knows where evidence is and when you will delete it.
 - [ ] Test accounts and test data are handed back for revocation and deletion.
 - [ ] You kept the validator output, the tool versions, and the command lines you actually ran, in the engagement store.
+
+## Related in this repository
+
+- [Checklist index](README.md)
+- [Reporting method](../methodology/08-reporting.md)
+- [Report template](../templates/report.md)
+- [Finding template](../templates/finding.md)
+- [Executive summary](../templates/executive-summary.md)
+- [Disclaimer](../DISCLAIMER.md)

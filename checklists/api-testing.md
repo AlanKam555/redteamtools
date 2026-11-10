@@ -44,3 +44,11 @@ Use this for an HTTP API you are authorised to test, alongside [API testing](../
 - [ ] The specification and the live behaviour disagree in places you wrote down, even where the live behaviour was safe.
 - [ ] Test objects you created are listed for deletion.
 - [ ] Findings cite the API Security Top 10 category and the concrete route, not only the category name.
+
+## Related in this repository
+
+- [Checklist index](README.md)
+- [API testing](../methodology/06-api-testing.md)
+- [Access control](../methodology/vulnerabilities/idor-access-control.md)
+- [SSRF](../methodology/vulnerabilities/ssrf.md)
+- [Disclaimer](../DISCLAIMER.md)

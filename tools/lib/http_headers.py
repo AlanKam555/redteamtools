@@ -17,13 +17,16 @@ import urllib.request
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass
 
-from lib.banner import emit_banner, fail, require_authorized
+from lib import __version__
+from lib.banner import EXIT_FINDINGS, EXIT_OK, EXIT_USAGE, fail, require_authorized, validate_timeout
 
-USER_AGENT = "redteamtools-header-checker/1.0 (authorised defensive check)"
+USER_AGENT = f"redteamtools-header-checker/{__version__} (authorised defensive check)"
 PROBE_ORIGIN = "https://authorised-header-check.invalid"
 MAX_REDIRECTS = 3
 MAX_URL_LENGTH = 2048
 BODY_CAP = 4096
+MAX_HEADER_NAMES = 64
+MAX_HEADER_CHARS = 8192
 
 GOOD_REFERRER = {
     "no-referrer",
@@ -50,6 +53,11 @@ class FetchResult:
 
 
 def validate_url(raw: str) -> str:
+    """Return a stripped http(s) URL, or raise ``ValueError``.
+
+    Credentials, other schemes, missing hosts, control characters, over-long
+    URLs, and ports outside 1-65535 are rejected before any connection.
+    """
     if not isinstance(raw, str):
         raise ValueError("URL must be a string")
     candidate = raw.strip()
@@ -69,16 +77,35 @@ def validate_url(raw: str) -> str:
     # urlsplit decodes the host; reject whitespace that survived parsing.
     if any(char.isspace() for char in parts.hostname):
         raise ValueError("URL host contains whitespace")
+    try:
+        port = parts.port
+    except ValueError as exc:
+        raise ValueError("URL port is not valid") from exc
+    if port is not None and not 1 <= port <= 65535:
+        raise ValueError("URL port must be between 1 and 65535")
     return candidate
 
 
-def _normalise(headers: Mapping[str, str | Sequence[str]]) -> dict[str, list[str]]:
+def _normalise(headers: Mapping[str, str | Sequence[str]]) -> tuple[dict[str, list[str]], bool]:
+    """Fold header names and cap size so one response cannot dominate the process.
+
+    The boolean is true when a name or a value was dropped or shortened.
+    """
     normalised: dict[str, list[str]] = {}
+    limited = False
     for key, value in headers.items():
+        if len(normalised) >= MAX_HEADER_NAMES and key.lower() not in normalised:
+            limited = True
+            continue
         values = [value] if isinstance(value, str) else list(value)
         bucket = normalised.setdefault(key.lower(), [])
-        bucket.extend(str(item) for item in values)
-    return normalised
+        for item in values:
+            text = str(item)
+            if len(text) > MAX_HEADER_CHARS:
+                limited = True
+                text = text[:MAX_HEADER_CHARS]
+            bucket.append(text)
+    return normalised, limited
 
 
 def _first(headers: Mapping[str, Sequence[str]], name: str) -> str | None:
@@ -104,6 +131,23 @@ def _parse_directives(policy: str) -> dict[str, str]:
         name, _, value = item.partition(" ")
         directives[name.lower()] = value.strip()
     return directives
+
+
+def _enforcing_frame_ancestors(policy: str | None) -> bool:
+    """True when CSP ``frame-ancestors`` is present and is not a wildcard source.
+
+    Whitespace around the wildcard is collapsed. A directive of ``*``, or any
+    source token that itself contains ``*``, does not count as a framing control.
+    """
+    if not policy:
+        return False
+    directives = _parse_directives(policy)
+    if "frame-ancestors" not in directives:
+        return False
+    tokens = directives["frame-ancestors"].split()
+    if not tokens:
+        return False
+    return not any("*" in token for token in tokens)
 
 
 def _hsts_max_age(value: str) -> int | None:
@@ -172,8 +216,17 @@ def evaluate_headers(
     `headers` maps header names to one value or a list of values. The function
     does not perform network I/O, which keeps the policy review testable.
     """
-    data = _normalise(headers)
+    data, limited = _normalise(headers)
     checks: list[Check] = []
+    if limited:
+        checks.append(
+            Check(
+                "header-limits",
+                "info",
+                f"Header review was capped at {MAX_HEADER_NAMES} names and "
+                f"{MAX_HEADER_CHARS} characters per value.",
+            )
+        )
     scheme = scheme.lower()
 
     if scheme != "https":
@@ -283,8 +336,7 @@ def evaluate_headers(
 
     frame = (_first(data, "x-frame-options") or "").strip().upper()
     frame_ok = frame in {"DENY", "SAMEORIGIN"}
-    csp_text = (csp or "").lower()
-    ancestors_ok = "frame-ancestors" in csp_text and "frame-ancestors *" not in csp_text.replace("  ", " ")
+    ancestors_ok = _enforcing_frame_ancestors(csp)
     if frame_ok or ancestors_ok:
         checks.append(
             Check(
@@ -429,10 +481,19 @@ def evaluate_headers(
 
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
+    def redirect_request(  # noqa: ANN201
+        self,
+        req: urllib.request.Request,
+        fp: object,
+        code: int,
+        msg: str,
+        headers: object,
+        newurl: str,
+    ) -> urllib.request.Request | None:
         # Returning None lets another handler continue. Raising keeps the
         # redirect response so the caller can record the hop itself.
-        raise urllib.error.HTTPError(req.full_url, code, msg, headers, fp)
+        # ``headers`` is an email.message.Message at runtime; HTTPError accepts it.
+        raise urllib.error.HTTPError(req.full_url, code, msg, headers, fp)  # type: ignore[arg-type]
 
 
 def fetch(url: str, *, timeout: float) -> FetchResult:
@@ -478,7 +539,7 @@ def fetch(url: str, *, timeout: float) -> FetchResult:
         response.read(BODY_CAP)
         header_map: dict[str, list[str]] = {}
         seen: set[str] = set()
-        for key in response.headers.keys():
+        for key in response.headers:
             folded = key.lower()
             if folded in seen:
                 continue
@@ -531,7 +592,9 @@ def build_parser() -> argparse.ArgumentParser:
         ),
         epilog=(
             "Authorised use only. Pass --authorized only when you have permission "
-            "to request the named URL.\n"
+            "to request the named URL. There is no default host.\n"
+            "Exit status: 0 when no fail-level result was found, 1 when a fail-level "
+            "gap was found, 2 when the arguments were refused or the request could not run.\n"
             "Guidance: https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -558,22 +621,24 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Review one URL. Exits 2 before any connection when the flag or URL is refused."""
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.url is None:
         parser.print_help(sys.stderr)
-        return 2
+        print("error: missing --url", file=sys.stderr)
+        return EXIT_USAGE
+    # Authorisation is checked before URL use so a refused run never connects.
     require_authorized(args.authorized)
-    if not 1 <= args.timeout <= 30:
-        fail("--timeout must be between 1 and 30 seconds")
     try:
+        timeout = validate_timeout(args.timeout)
         target = validate_url(args.url)
     except ValueError as exc:
         fail(str(exc))
     print(f"Target: {target}", file=sys.stderr)
     print("Authorisation flag: accepted. Sending one read-only GET.", file=sys.stderr)
     try:
-        fetched = fetch(target, timeout=args.timeout)
+        fetched = fetch(target, timeout=timeout)
     except ValueError as exc:
         fail(str(exc))
     except urllib.error.URLError as exc:
@@ -595,8 +660,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         sys.stdout.write("\n")
     else:
         sys.stdout.write(format_text(fetched, checks))
-    return 1 if any(check.status == "fail" for check in checks) else 0
+    return EXIT_FINDINGS if any(check.status == "fail" for check in checks) else EXIT_OK
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
