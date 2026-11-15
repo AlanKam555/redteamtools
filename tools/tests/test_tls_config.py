@@ -133,14 +133,16 @@ class LocalServerTests(unittest.TestCase):
                         continue
                     except OSError:
                         break
+                    connection.settimeout(2)
                     try:
                         peer = context.wrap_socket(connection, server_side=True)
-                        peer.settimeout(2)
-                        with contextlib.suppress(TimeoutError):
+                        with contextlib.suppress(OSError):
                             peer.recv(32)
-                        peer.close()
-                    except ssl.SSLError:
-                        connection.close()
+                        with contextlib.suppress(OSError):
+                            peer.close()
+                    except OSError:
+                        with contextlib.suppress(OSError):
+                            connection.close()
 
             thread = threading.Thread(target=serve, daemon=True)
             thread.start()
