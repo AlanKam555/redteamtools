@@ -11,9 +11,11 @@ import threading
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, patch
 
 import support  # noqa: F401
 from lib.tls_config import (
+    Check,
     assess,
     certificate_window,
     cipher_assessment,
@@ -133,14 +135,25 @@ class LocalServerTests(unittest.TestCase):
                         continue
                     except OSError:
                         break
+                    peer = None
                     try:
                         peer = context.wrap_socket(connection, server_side=True)
                         peer.settimeout(2)
-                        with contextlib.suppress(TimeoutError):
+                        # Clients often close as soon as the handshake finishes.
+                        # BrokenPipeError and ConnectionResetError must not kill
+                        # this thread, or later probes in assess() see a dead port.
+                        with contextlib.suppress(TimeoutError, ConnectionError, BrokenPipeError):
                             peer.recv(32)
-                        peer.close()
                     except ssl.SSLError:
-                        connection.close()
+                        with contextlib.suppress(OSError):
+                            connection.close()
+                    finally:
+                        if peer is not None:
+                            with contextlib.suppress(OSError):
+                                peer.close()
+                        else:
+                            with contextlib.suppress(OSError):
+                                connection.close()
 
             thread = threading.Thread(target=serve, daemon=True)
             thread.start()
@@ -150,10 +163,68 @@ class LocalServerTests(unittest.TestCase):
                 stop.set()
                 bound.close()
                 thread.join(timeout=3)
+        self.assertIn("protocol", checks)
         self.assertEqual(checks["trust"].status, "fail")
         self.assertEqual(checks["certificate-validity"].status, "pass")
         self.assertIn("SHA-256", checks["certificate-fingerprint"].detail)
         self.assertIn(checks["protocol"].status, {"pass", "warn"})
+
+
+class HandshakeFallbackTests(unittest.TestCase):
+    def test_oserror_on_verified_handshake_still_reports_protocol(self) -> None:
+        """A socket error after the cert fetch must not omit the protocol line."""
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            cert = directory / "cert.pem"
+            key = directory / "key.pem"
+            try:
+                subprocess.run(
+                    [
+                        "openssl",
+                        "req",
+                        "-x509",
+                        "-newkey",
+                        "rsa:2048",
+                        "-keyout",
+                        str(key),
+                        "-out",
+                        str(cert),
+                        "-days",
+                        "90",
+                        "-nodes",
+                        "-subj",
+                        "/CN=localhost",
+                    ],
+                    check=True,
+                    capture_output=True,
+                )
+            except (FileNotFoundError, subprocess.CalledProcessError):
+                self.skipTest("openssl is required for this fallback test")
+            pem = cert.read_text(encoding="ascii")
+
+        fake_tls = MagicMock()
+        fake_tls.version.return_value = "TLSv1.3"
+        fake_tls.cipher.return_value = ("TLS_AES_128_GCM_SHA256", "TLSv1.3", 128)
+        fake_tls.getpeercert.return_value = {}
+
+        def handshake_side_effect(*_args, **kwargs):
+            if kwargs.get("verify", True):
+                raise OSError("simulated reset")
+            return fake_tls, MagicMock()
+
+        with (
+            patch("lib.tls_config.ssl.get_server_certificate", return_value=pem),
+            patch("lib.tls_config._handshake", side_effect=handshake_side_effect),
+            patch(
+                "lib.tls_config.legacy_probe",
+                return_value=Check("legacy", "info", "skipped"),
+            ),
+        ):
+            checks = {item.name: item for item in assess("127.0.0.1", 443, 2)}
+        self.assertEqual(checks["trust"].status, "fail")
+        self.assertIn("protocol", checks)
+        self.assertEqual(checks["protocol"].status, "pass")
+        fake_tls.close.assert_called()
 
 
 class CliTests(unittest.TestCase):

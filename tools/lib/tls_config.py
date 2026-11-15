@@ -394,6 +394,7 @@ def assess(host: str, port: int, timeout: float, *, now: dt.datetime | None = No
             )
         )
 
+    tls: ssl.SSLSocket | None = None
     try:
         tls, _sock = _handshake(host, port, timeout, verify=True)
     except ssl.SSLError as exc:
@@ -412,7 +413,19 @@ def assess(host: str, port: int, timeout: float, *, now: dt.datetime | None = No
             tls = None
     except (OSError, ValueError) as exc:
         checks.append(Check("trust", "fail", f"Connection failed: {exc}"))
-        tls = None
+        # A transient socket error after the certificate fetch should not leave
+        # the report without a protocol line. Try one unverified handshake.
+        try:
+            tls, _sock = _handshake(host, port, timeout, verify=False)
+        except (OSError, ssl.SSLError, ValueError) as inner:
+            checks.append(
+                Check(
+                    "protocol",
+                    "warn",
+                    f"Could not negotiate TLS after the connection error: {inner}",
+                )
+            )
+            tls = None
     else:
         checks.append(Check("trust", "pass", "The certificate chain is trusted by this system's CA store."))
 

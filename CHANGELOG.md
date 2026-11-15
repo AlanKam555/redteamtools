@@ -2,6 +2,17 @@
 
 All notable changes to this reference are recorded here. The licence is the MIT licence in [LICENSE](LICENSE). Copyright (c) 2026 Alan.
 
+## 1.1.1 — 2026-11-15
+
+### Utilities
+
+- TLS review always records a protocol result after a certificate is fetched, including when the verified handshake hits a socket error and an unverified retry is needed.
+
+### Tests and CI
+
+- Local TLS server fixture no longer dies on `BrokenPipeError` / connection reset after the client closes, which was causing CI to fail with a missing `protocol` check.
+- Added a regression test for the verified-handshake `OSError` fallback path.
+
 ## 1.1.0 — 2026-11-10
 
 ### Documentation
