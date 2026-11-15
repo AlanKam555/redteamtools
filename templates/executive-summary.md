@@ -38,3 +38,10 @@ Do not invent counts. If you mention a number, it has to match the findings summ
 2. [Decision, owner, and what "done" means.]
 
 A retest of the high-severity themes, in the same environment, is usually the last item.
+
+## Related in this repository
+
+- [Report template](report.md)
+- [Reporting method](../methodology/08-reporting.md)
+- [Reporting checklist](../checklists/reporting.md)
+- [Disclaimer](../DISCLAIMER.md)

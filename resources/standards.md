@@ -33,3 +33,10 @@ These are the documents an assessment report can cite without apologising. Use t
 ## How to cite them in a finding
 
 Name the identifier and give the URL you opened. "OWASP says this is bad" is not a reference. "CWE-639, broken access control on a user-supplied object identifier, WSTG authorization test for IDOR" is a reference. If you adjusted a CVSS score for business impact, say so next to the vector rather than publishing the adjusted number as if FIRST had produced it.
+
+## Related in this repository
+
+- [Resource index](README.md)
+- [Vulnerability classes](vulnerability-classes.md)
+- [Methodology](../methodology/README.md)
+- [Disclaimer](../DISCLAIMER.md)

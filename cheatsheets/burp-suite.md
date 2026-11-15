@@ -40,3 +40,11 @@ Automated crawling and active scanning are optional and often forbidden on produ
 - Burp Suite documentation — <https://portswigger.net/burp/documentation>
 - OWASP ZAP — <https://www.zaproxy.org/>
 - PortSwigger Web Security Academy — <https://portswigger.net/web-security>
+
+## Related in this repository
+
+- [Cheatsheet index](README.md)
+- [Web application testing](../methodology/05-web-application-testing.md)
+- [Web checklist](../checklists/web-application-testing.md)
+- [Headers and TLS](http-headers-and-tls.md)
+- [Disclaimer](../DISCLAIMER.md)

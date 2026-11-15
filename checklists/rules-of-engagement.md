@@ -37,3 +37,11 @@ Complete this against the signed rules, not against the proposal. The [template]
 - [ ] Active sessions and any test data you created are listed for the client to remove.
 - [ ] Credentials the client issued are revoked or returned.
 - [ ] The report's scope section matches the rules, including what you did not test.
+
+## Related in this repository
+
+- [Checklist index](README.md)
+- [Scoping method](../methodology/01-scoping-and-rules-of-engagement.md)
+- [Rules template](../templates/rules-of-engagement.md)
+- [Validator](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

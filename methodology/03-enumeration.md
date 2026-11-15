@@ -73,3 +73,13 @@ That note is enough to plan the next two phases. A folder of unlabelled scanner 
 - OWASP Web Security Testing Guide — <https://wstg.owasp.org/>
 - OWASP API Security Top 10 (2023) — <https://owasp.org/API-Security/editions/2023/en/0x11-t10/>
 - NIST SP 800-115 — <https://csrc.nist.gov/pubs/sp/800/115/final>
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [Previous: reconnaissance](02-reconnaissance.md)
+- [Next: vulnerability analysis](04-vulnerability-analysis.md)
+- [Nmap](../cheatsheets/nmap.md)
+- [ffuf](../cheatsheets/ffuf.md)
+- [Header checker](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

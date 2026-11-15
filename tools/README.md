@@ -1,5 +1,7 @@
 # Defensive utilities
 
+> Authorised use only. [Disclaimer](../DISCLAIMER.md) · [Security policy](../SECURITY.md) · [Repository index](../README.md) · [Licence](../LICENSE) · [Contributing](../CONTRIBUTING.md)
+
 Four small programs for an authorised assessment. They are deliberately narrow.
 
 | Program | What it does | Network |
@@ -9,7 +11,7 @@ Four small programs for an authorised assessment. They are deliberately narrow.
 | `report_skeleton.py` | Writes a Markdown report draft under the current directory. | None. |
 | `scope_roe_validator.py` | Checks a local rules-of-engagement file for required decisions and leftover placeholders. | None. |
 
-Runtime dependencies: none. Python 3.10 or newer is enough. `requirements.txt` records that on purpose.
+Runtime dependencies: none. Python 3.10 or newer is enough. `requirements.txt` and the repository [pyproject.toml](../pyproject.toml) record that on purpose (`dependencies` is empty). Ruff is a development linter only. The tools do not import it. The package version is `1.1.0` (`tools/lib/__init__.py`).
 
 ## Authorised use
 
@@ -30,7 +32,13 @@ python3 tools/tls_config_checker.py \
 
 Replace `app.example.com` with a host that is inside your rules of engagement. The examples above are placeholders.
 
-Exit status is `0` when the check finished without a fail-level result, `1` when it finished and found a fail-level gap, and `2` when the arguments were refused.
+| Exit status | Meaning |
+| --- | --- |
+| `0` | The check finished with no fail-level result, the report draft was written, or the rules file is complete enough to read. |
+| `1` | The check finished and found a fail-level gap, or the rules file is not ready. |
+| `2` | The arguments were refused, or the check could not run. A missing `--authorized` on a network tool is this status, and no connection is opened. |
+
+The report generator does not use status `1`. A rules file that cannot be read (missing, wrong type, too large, not UTF-8) is status `2`, not `1`.
 
 ## What the header check looks at
 
@@ -45,7 +53,7 @@ The review follows the public recommendations in the [OWASP HTTP Headers Cheat S
 - Cookie values are never printed. A `Set-Cookie` header is reduced to the cookie name and the flags.
 - The request sends `Origin: https://authorised-header-check.invalid`. If the server reflects that origin and allows credentials, the check fails. One probe origin is enough to see a reflective configuration. The tool does not try a list of origins.
 
-The response body is capped at a few kilobytes. The tool does not crawl, authenticate, or send a second request with a different path.
+The response body is capped at a few kilobytes, and header scoring stops after 64 names and 8192 characters per value so one response cannot dominate the process. A redirect is followed only when the next URL still passes the same checks, including the ban on embedded credentials, and only up to three hops. The tool does not crawl, authenticate, or send a second request with a different path of its own. A wildcard `frame-ancestors` source, including one hidden by extra spaces, does not count as clickjacking protection.
 
 ## What the TLS check looks at
 

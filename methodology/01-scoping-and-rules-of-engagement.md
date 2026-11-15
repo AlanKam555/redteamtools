@@ -79,3 +79,14 @@ If the client asks for something the rules forbid (a production denial-of-servic
 - NCSC vulnerability management collection — <https://www.ncsc.gov.uk/collection/vulnerability-management>
 - Rules of engagement template — [../templates/rules-of-engagement.md](../templates/rules-of-engagement.md)
 - Scoping checklist — [../checklists/scoping.md](../checklists/scoping.md)
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [Next: reconnaissance](02-reconnaissance.md)
+- [Scoping checklist](../checklists/scoping.md)
+- [Rules-of-engagement checklist](../checklists/rules-of-engagement.md)
+- [Rules template](../templates/rules-of-engagement.md)
+- [Completed example](../templates/examples/README.md)
+- [Rules validator](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

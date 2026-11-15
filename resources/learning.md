@@ -27,3 +27,10 @@ Both publish their own rules about what you may attack. Their machines are in sc
 - Stop when you understand the failed control. Collecting a longer payload list does not make the lesson more true.
 - Write the remediation in your notes before you look at the official solution, then compare. The remediation is the part a client pays for.
 - Do not copy lab data, flags, or other people's write-ups into a client report.
+
+## Related in this repository
+
+- [Resource index](README.md)
+- [Vulnerability classes](vulnerability-classes.md)
+- [Methodology](../methodology/README.md)
+- [Disclaimer](../DISCLAIMER.md)

@@ -66,3 +66,12 @@ Integrity checks (HMAC of a cookie) remain a good idea for tamper detection of d
 - OWASP Top 10 (2021) A08 — <https://owasp.org/Top10/2021/>
 - PortSwigger, insecure deserialization — <https://portswigger.net/web-security/deserialization>
 - OWASP Dependency-Check — <https://owasp.org/www-project-dependency-check/>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)

@@ -36,3 +36,13 @@ The tools do not discover hosts, do not brute-force credentials, do not send exp
 ## Disclosure of engagement findings
 
 Findings from a real assessment belong to the client. Store them under the engagement's data-handling rules. Do not commit them to this repository, and do not publish them because a template in `templates/` happens to be public.
+
+## Related in this repository
+
+- [Repository index](README.md)
+- [Disclaimer](DISCLAIMER.md)
+- [Contributing](CONTRIBUTING.md) — including what must not be added
+- [MIT licence](LICENSE) — Copyright (c) 2026 Alan
+- [Utility behaviour and exit codes](tools/README.md)
+
+Continuous integration runs the unit tests and the linter only. It does not contact an external host, and the workflow permission is read access to the repository contents.

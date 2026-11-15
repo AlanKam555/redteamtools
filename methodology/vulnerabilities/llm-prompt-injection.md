@@ -74,3 +74,12 @@ The cheat sheet and LLM01 agree on the architecture. In practice:
 - OWASP LLM01 prompt injection — <https://genai.owasp.org/llmrisk/llm01-prompt-injection/>
 - OWASP LLM Prompt Injection Prevention Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html>
 - Related classes when the model has tools — [SSRF](ssrf.md), [command injection](command-injection.md), [access control](idor-access-control.md)
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)
