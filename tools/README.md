@@ -11,7 +11,7 @@ Four small programs for an authorised assessment. They are deliberately narrow.
 | `report_skeleton.py` | Writes a Markdown report draft under the current directory. | None. |
 | `scope_roe_validator.py` | Checks a local rules-of-engagement file for required decisions and leftover placeholders. | None. |
 
-Runtime dependencies: none. Python 3.10 or newer is enough. `requirements.txt` and the repository [pyproject.toml](../pyproject.toml) record that on purpose (`dependencies` is empty). Ruff is a development linter only. The tools do not import it. The package version is `1.1.0` (`tools/lib/__init__.py`).
+Runtime dependencies: none. Python 3.10 or newer is enough. `requirements.txt` and the repository [pyproject.toml](../pyproject.toml) record that on purpose (`dependencies` is empty). Ruff is a development linter only. The tools do not import it. The package version is `1.1.1` (`tools/lib/__init__.py`).
 
 ## Authorised use
 

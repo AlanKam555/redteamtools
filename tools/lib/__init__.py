@@ -5,4 +5,4 @@ network tools require an explicit target and ``--authorized`` before they
 open a socket. They do not crawl and they do not send exploit payloads.
 """
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
