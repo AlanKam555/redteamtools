@@ -1,5 +1,7 @@
 # Templates
 
+> Authorised use only. [Disclaimer](../DISCLAIMER.md) · [Security policy](../SECURITY.md) · [Repository index](../README.md) · [Licence](../LICENSE) · [Contributing](../CONTRIBUTING.md)
+
 Copy these into the engagement store and fill them in there. Do not fill them with client data inside this repository.
 
 | Template | Purpose |

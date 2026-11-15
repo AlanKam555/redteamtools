@@ -63,3 +63,12 @@ If the business requirement is truly "customers upload templates", isolate rende
 - WSTG server-side template injection — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server-side_Template_Injection>
 - OWASP Injection Prevention Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html>
 - PortSwigger, server-side template injection — <https://portswigger.net/web-security/server-side-template-injection>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)

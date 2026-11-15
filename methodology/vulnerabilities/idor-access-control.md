@@ -77,3 +77,12 @@ Regression tests belong in CI: for each object type, an automated check that pri
 - OWASP Mass Assignment Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html>
 - WSTG IDOR — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References>
 - PortSwigger, access control — <https://portswigger.net/web-security/access-control>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)

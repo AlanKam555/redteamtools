@@ -54,3 +54,12 @@ Use this on an application you are authorised to test, alongside [web applicatio
 - [ ] Each candidate is either a finding with sanitised evidence or a note explaining why it was discarded.
 - [ ] You did not keep a copy of another user's real data. Canaries and test records are identified so the client can delete them.
 - [ ] Tools were stopped, and the project file is in the engagement store.
+
+## Related in this repository
+
+- [Checklist index](README.md)
+- [Web application testing](../methodology/05-web-application-testing.md)
+- [Vulnerability classes](../methodology/vulnerabilities/README.md)
+- [Burp Suite cheatsheet](../cheatsheets/burp-suite.md)
+- [Headers and TLS](../cheatsheets/http-headers-and-tls.md)
+- [Disclaimer](../DISCLAIMER.md)

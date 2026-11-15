@@ -42,3 +42,10 @@ Do not add `-as` or a workflow you have not reviewed just because an example use
 
 - Nuclei — <https://github.com/projectdiscovery/nuclei>
 - Documentation — <https://docs.projectdiscovery.io/tools/nuclei/overview>
+
+## Related in this repository
+
+- [Cheatsheet index](README.md)
+- [Vulnerability analysis](../methodology/04-vulnerability-analysis.md)
+- [Class notes](../methodology/vulnerabilities/README.md)
+- [Disclaimer](../DISCLAIMER.md)

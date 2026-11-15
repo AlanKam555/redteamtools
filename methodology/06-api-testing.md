@@ -74,3 +74,13 @@ Group findings by object type and by the missing check, not by the route list. "
 - OWASP Mass Assignment Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html>
 - OWASP API project — <https://owasp.org/API-Security/>
 - API testing checklist — [../checklists/api-testing.md](../checklists/api-testing.md)
+
+## Related in this repository
+
+- [Methodology index](README.md)
+- [API checklist](../checklists/api-testing.md)
+- [Web application testing](05-web-application-testing.md)
+- [Access control](vulnerabilities/idor-access-control.md)
+- [SSRF](vulnerabilities/ssrf.md)
+- [Finding template](../templates/finding.md)
+- [Disclaimer](../DISCLAIMER.md)

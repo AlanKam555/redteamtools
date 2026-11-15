@@ -69,3 +69,12 @@ A deny-list of metacharacters in the application is not a detection strategy and
 - OWASP OS Command Injection Defense Cheat Sheet — <https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html>
 - WSTG command injection — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/07-Input_Validation_Testing/12-Testing_for_Command_Injection>
 - PortSwigger, OS command injection — <https://portswigger.net/web-security/os-command-injection>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)

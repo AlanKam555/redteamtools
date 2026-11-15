@@ -1,5 +1,7 @@
 # Examples
 
+> Authorised use only. These files are not permission to test anything. [Disclaimer](../../DISCLAIMER.md) · [Security policy](../../SECURITY.md) · [Repository index](../../README.md) · [Licence](../../LICENSE)
+
 These files are fictional. They show the shape of a rules-of-engagement record that `tools/scope_roe_validator.py` accepts. They do not authorise anyone to test `example.com` or any other system.
 
 | File | Validator |

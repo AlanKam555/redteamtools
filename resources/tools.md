@@ -6,7 +6,7 @@ Public tools that support the method in this repository. The usage boundaries ar
 
 - Nmap — <https://nmap.org/>, manual <https://nmap.org/book/man.html>. Host and service discovery.
 - ffuf — <https://github.com/ffuf/ffuf>, wiki <https://github.com/ffuf/ffuf/wiki>. HTTP content discovery at a rate you chose.
-- SecLists — <https://github.com/danielmiessler/SecLists>. Wordlists. A smaller list that matches the technology is the professional choice.
+- SecLists — <https://github.com/danielmiessler/SecLists>. Wordlists. A smaller list that matches the technology is the professional choice. The other upstream catalogues are on [payload and wordlist libraries](payload-libraries.md), which is a list of links, not a copy of the files.
 
 ## Template and proxy testing
 
@@ -24,3 +24,11 @@ Public tools that support the method in this repository. The usage boundaries ar
 ## What this list leaves out
 
 Exploit frameworks, payload generators, and credential-attack tools are widely published and widely misused. They are not linked here. An engagement that has written permission for a specific technique can use the vendor's own documentation for that technique, under those rules, without this repository mirroring it.
+
+## Related in this repository
+
+- [Resource index](README.md)
+- [Payload and wordlist libraries](payload-libraries.md)
+- [Cheatsheets](../cheatsheets/README.md)
+- [Defensive utilities](../tools/README.md)
+- [Disclaimer](../DISCLAIMER.md)

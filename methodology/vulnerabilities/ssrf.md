@@ -63,3 +63,12 @@ Denial of odd encodings and odd IP spellings is useful only as a supplement to r
 - WSTG SSRF — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery>
 - OWASP API Security Top 10 (2023) — <https://owasp.org/API-Security/editions/2023/en/0x11-t10/>
 - PortSwigger, SSRF — <https://portswigger.net/web-security/ssrf>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)

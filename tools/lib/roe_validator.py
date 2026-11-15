@@ -15,7 +15,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from lib.banner import emit_banner, fail
+from lib.banner import EXIT_FINDINGS, EXIT_OK, EXIT_USAGE, emit_banner, fail
 
 MAX_BYTES = 1_000_000
 
@@ -32,8 +32,11 @@ REQUIRED_SECTIONS = (
 )
 
 _HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
+# Bracketed prompts such as [Client legal name] are placeholders.
+# A Markdown link [label](url) is a reference, not a prompt, and is left alone.
 _PLACEHOLDER = re.compile(
-    r"\b(TBD|TODO|FIXME|CHANGE_ME|lorem ipsum)\b|\[[A-Za-z][^\]\n]{0,80}\]",
+    r"\b(TBD|TODO|FIXME|CHANGE_ME|lorem ipsum)\b"
+    r"|\[(?![^\]]+\]\()[A-Za-z][^\]\n]{0,80}\]",
     re.IGNORECASE,
 )
 
@@ -75,6 +78,7 @@ def _placeholders(text: str) -> list[str]:
 
 
 def validate_markdown(text: str) -> list[str]:
+    """Return human-readable gaps in a Markdown rules file. An empty list passes."""
     issues: list[str] = []
     sections = parse_markdown(text)
     for name in REQUIRED_SECTIONS:
@@ -110,6 +114,7 @@ def _parse_day(value: object, label: str, issues: list[str]) -> dt.date | None:
 
 
 def validate_json(data: object) -> list[str]:
+    """Return human-readable gaps in a JSON rules object. An empty list passes."""
     issues: list[str] = []
     if not isinstance(data, dict):
         return ["top-level JSON value must be an object"]
@@ -152,7 +157,7 @@ def validate_json(data: object) -> list[str]:
         require_text(auth.get("approved_by", ""), "authorization.approved_by", 200)
         _parse_day(auth.get("date"), "authorization.date", issues)
 
-    def require_list(value: object, label: str) -> list:
+    def require_list(value: object, label: str) -> list[object]:
         if not isinstance(value, list) or not value:
             issues.append(f"{label} must be a non-empty list")
             return []
@@ -192,6 +197,13 @@ def validate_json(data: object) -> list[str]:
 
 
 def load_and_validate(path: Path) -> list[str]:
+    """Read a local Markdown or JSON rules file and return its gaps.
+
+    Raises:
+        ValueError: the path is not an allowed file, is too large, or is not valid JSON.
+    """
+    if any(ord(char) < 32 for char in str(path)):
+        raise ValueError("path contains control characters")
     if not path.is_file():
         raise ValueError("path is not a file")
     size = path.stat().st_size
@@ -216,18 +228,24 @@ def build_parser() -> argparse.ArgumentParser:
             "Check a local rules-of-engagement file for required sections, empty decisions, "
             "and leftover placeholders. Does not contact any target."
         ),
-        epilog="Authorised use only. A pass means the document is complete enough to read, not that the test is lawful.",
+        epilog=(
+            "Authorised use only. A pass means the document is complete enough to read, "
+            "not that the test is lawful. Exit status: 0 when the required decisions are "
+            "present, 1 when the file is not ready, 2 when it could not be read."
+        ),
     )
     parser.add_argument("--file", help="Path to a Markdown or JSON rules-of-engagement file")
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Check one local rules file. Does not contact a target."""
     parser = build_parser()
     args = parser.parse_args(argv)
-    if not args.file:
+    if not args.file or not str(args.file).strip():
         parser.print_help(sys.stderr)
-        return 2
+        print("error: missing --file", file=sys.stderr)
+        return EXIT_USAGE
     emit_banner()
     path = Path(args.file)
     try:
@@ -238,9 +256,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"{path} is not ready:")
         for issue in issues:
             print(f"- {issue}")
-        return 1
+        return EXIT_FINDINGS
     print(f"{path} has the required sections and no placeholder markers.")
-    return 0
+    return EXIT_OK
 
 
 if __name__ == "__main__":

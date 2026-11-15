@@ -1,5 +1,7 @@
 # Cheatsheets
 
+> Authorised use only. [Disclaimer](../DISCLAIMER.md) · [Security policy](../SECURITY.md) · [Repository index](../README.md) · [Licence](../LICENSE) · [Contributing](../CONTRIBUTING.md)
+
 Short usage notes for tools that show up in authorised assessments. Each note says what the tool is for, a conservative way to run it, what to record, and where the official manual is. They are not an attack procedure and they are not a payload list.
 
 Run them only against assets named in the current rules of engagement, inside the window, at a rate the target can survive. A command with `TARGET` in it is a placeholder. Substitute a host you are allowed to test, or do not run it.

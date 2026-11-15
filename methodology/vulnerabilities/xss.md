@@ -84,3 +84,12 @@ Input validation is useful for structured fields (an identifier, a colour, an en
 - WSTG reflected XSS — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting>
 - WSTG stored XSS — <https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting>
 - PortSwigger, cross-site scripting — <https://portswigger.net/web-security/cross-site-scripting>
+
+## Related in this repository
+
+- [Vulnerability class index](README.md)
+- [Web application checklist](../../checklists/web-application-testing.md)
+- [API testing checklist](../../checklists/api-testing.md)
+- [Finding template](../../templates/finding.md)
+- [Where each class is documented](../../resources/vulnerability-classes.md)
+- [Disclaimer](../../DISCLAIMER.md)
